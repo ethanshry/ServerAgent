@@ -1,3 +1,5 @@
 # Reserve the port 9000 for server_agent's use
-[9000]
-name = 'SELF'
+[SELF]
+deployment_type = "PORT"
+dest = 9000
+commit = "-"
