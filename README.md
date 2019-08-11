@@ -2,6 +2,23 @@
 
 Multi-process deployment manager
 
+## Setting up on a server
+
+```bash
+# we will assume ubuntu 18.04 as our operating env
+# update OS
+sudo apt-get update && apt-get upgrade
+# install pip3
+sudo apt install python3-pip
+
+# setup package
+make setup-linux
+make install
+pm2 start server_agent
+
+
+```
+
 ## node_env.toml
 
 The node_env.toml file is a confiiguration file designed to contain information about all the applications currently running on the agent.

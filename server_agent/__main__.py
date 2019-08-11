@@ -20,8 +20,17 @@ def log():
 
 @app.post('/github-event')
 def github_event():
-    print(request.json)
-    return
+    data = request.json
+    print(data['action'])
+    if data['action'] == 'closed':
+        # this is a pull request which was either closed or merged
+        print(data['merged'])
+        if data['merged'] == 'true':
+            # pull request was merged, we're in luck
+            print(data['base'])
+            if data['base']['ref'] == 'deployment':
+                # we pulled to the deployment branch, we want to run this code
+                print(f"event is good, trying to deploy {data['repo']['full_name']}")
 
 @app.get('/rt/<name>')
 def sec(name):

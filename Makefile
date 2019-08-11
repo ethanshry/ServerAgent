@@ -24,3 +24,7 @@ test:
 .PHONY: run
 run:
 	python3 -m server_agent
+
+.PHONY: deploy
+deploy:
+	pm2 start server_agent --interpreter=python3 --interpreter-args='-m server_agent'
