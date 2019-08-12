@@ -27,7 +27,6 @@ def github_event():
     data = request.json
     if data['action'] == 'closed':
         # this is a pull request which was either closed or merged
-        print(data['pull_request']['merged'])
         if data['pull_request']['merged'] is True:
             # pull request was merged, we're in luck
             if data['pull_request']['base']['ref'] == 'deployment':
@@ -35,7 +34,7 @@ def github_event():
                 print(f"event is good, trying to deploy {data['repository']['full_name']}")
 
                 # check for agent_config.toml in root
-                url = f"{FILE_API_BASE}/repos/{data['repository']['full_name']}/contents/agent_config.toml"
+                url = f"{FILE_API_BASE}/{data['repository']['full_name']}/contents/agent_config.toml"
                 res = req.get(url).json()
                 if 'message' in res.keys():
                     # file not found
