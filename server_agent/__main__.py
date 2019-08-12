@@ -35,7 +35,7 @@ def github_event():
                 print(f"event is good, trying to deploy {data['repository']['full_name']}")
 
                 # check for agent_config.toml in root
-                url = f'{FILE_API_BASE}/repos/{data['repository']['full_name']}/contents/agent_config.toml'
+                url = f"{FILE_API_BASE}/repos/{data['repository']['full_name']}/contents/agent_config.toml"
                 res = req.get(url).json()
                 if 'message' in res.keys():
                     # file not found
