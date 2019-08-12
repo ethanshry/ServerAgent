@@ -79,6 +79,6 @@ class DeploymentManager():
             LOG.error('user deployment scripts failed')
             return False
     
-        res = subprocess.run(f"pm2 start {self.agent_config['info']['name']} --interpreter=python3 --interpreter-args='-m {self.agent_config['info']['name']}'", shell=True, cwd=f"{ROOT}/{self.owner}/{self.repo}")
+        res = subprocess.run(f"pm2 start {self.app_spec['info']['name']} --interpreter=python3 --interpreter-args='-m {self.app_spec['info']['name']}'", shell=True, cwd=f"{ROOT}/{self.owner}/{self.repo}")
 
         return res.returncode is 0
