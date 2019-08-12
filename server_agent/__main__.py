@@ -52,7 +52,8 @@ def github_event():
                     if not deployment.load():
                         LOG.error('error loading config data')
                         return
-
+                    
+                    # tbh think this step doesn't actually matter? idk gotta clean this up
                     if not manager.register_app(deployment.repo, deployment.type, deployment.destination, deployment.commit):
                         LOG.error('failed to register app')
                         return
