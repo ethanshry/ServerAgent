@@ -40,7 +40,7 @@ class DeploymentManager():
 
         self.destination = self.app_spec['deployment']['dest']
 
-        self.commit = subprocess.run(['git rev-parse HEAD'], stdout=subprocess.PIPE, shell=True,  cwd=f'{ROOT}/{self.owner}/{self.repo}').stdout
+        self.commit = subprocess.run(['git rev-parse HEAD'], stdout=subprocess.PIPE, shell=True, cwd=f'{ROOT}/{self.owner}/{self.repo}').stdout
 
         print(f'{self.type} - {self.destination} - {self.commit}')
 
@@ -57,9 +57,10 @@ class DeploymentManager():
     
     def deploy(self):
         """ deploy the application """
-        if self.type.upper() is 'S3':
+        print(self.type.upper())
+        if self.type.upper() == 'S3':
             return self._deploy_s3()
-        elif self.type.upper() is 'PORT':
+        elif self.type.upper() == 'PORT':
             return self._deploy_port()
         else:
             LOG.error('deployment type not supported')
