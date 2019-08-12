@@ -29,18 +29,18 @@ def github_event():
         elif k == 'pull_request':
             for k, v in data[k].items():
                 print(f'- {k}')
+    print(data['pull_request']['head'])
+    print(data['pull_request']['base'])
+    print(data['repository']['full_name'])
     print(data['action'])
     if data['action'] == 'closed':
         # this is a pull request which was either closed or merged
         print(data['pull_request']['merged'])
         if data['pull_request']['merged'] is True:
             # pull request was merged, we're in luck
-            print(data['ref'])
-            print(data['repo'])
-            #print(data['base'])
-            if ['ref'] == 'refs/heads/deployment':
+            if data['pull_request']['head'] == 'refs/heads/deployment':
                 # we pulled to the deployment branch, we want to run this code
-                print(f"event is good, trying to deploy {data['repo']['full_name']}")
+                print(f"event is good, trying to deploy {data['repository']['full_name']}")
 
 @app.get('/rt/<name>')
 def sec(name):
