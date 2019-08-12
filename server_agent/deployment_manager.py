@@ -53,7 +53,7 @@ class DeploymentManager():
         if not os.path.exists(f'{ROOT}/{self.owner}'):
             os.makedirs(f'{ROOT}/{self.owner}')
         # clone repo
-        res = subprocess.run([f'rm -rf {ROOT}/{self.owner}/{self.repo} && git clone {GITHUB_URL}/{self.owner}/{self.repo}.git'], shell=True, cwd=f'{ROOT}/{self.owner}')
+        res = subprocess.run([f'rm -rf {ROOT}/{self.owner}/{self.repo} && git clone --branch deployment {GITHUB_URL}/{self.owner}/{self.repo}.git'], shell=True, cwd=f'{ROOT}/{self.owner}')
 
         return res.returncode is 0
     
