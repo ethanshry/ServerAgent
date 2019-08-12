@@ -53,7 +53,7 @@ class DeploymentManager():
         # clone repo
         res = subprocess.run([f'git clone {GITHUB_URL}/{self.owner}/{self.repo}.git'], shell=True, cwd=f'{ROOT}/{self.owner}')
 
-        return res.returncode is not 0
+        return res.returncode is 0
     
     def deploy(self):
         """ deploy the application """
@@ -80,4 +80,4 @@ class DeploymentManager():
     
         res = subprocess.run(f"pm2 start {self.owner}_{self.repo} --interpreter=python3 --interpreter-args='-m {self.repo}'", shell=True, cwd=f'{ROOT}/{self.owner}/{self.repo}')
 
-        return res.returncode != 0
+        return res.returncode is 0
