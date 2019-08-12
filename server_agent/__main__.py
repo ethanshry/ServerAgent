@@ -46,14 +46,14 @@ def github_event():
                     # app is deployable
                     deployment = DeploymentManager(*(data['repository']['full_name'].split('/')))
 
-                    if deployment.clone() not True:
+                    if not deployment.clone():
                         LOG.error('unable to clone project')
                         return
-                    if deployment.load() not True:
+                    if not deployment.load():
                         LOG.error('error loading config data')
                         return
 
-                    if manager.register_app(deployment.repo, deployment.type, deployment.destination, deployment.commit) not True:
+                    if not manager.register_app(deployment.repo, deployment.type, deployment.destination, deployment.commit):
                         LOG.error('failed to register app')
                         return
 
@@ -65,7 +65,7 @@ def github_event():
 
 @app.get('/status')
 def sec(name):
-    result = subprocess.run(['pm2 status']), capture_output=True, cwd='.')
+    result = subprocess.run(['pm2 status'], capture_output=True, cwd='.')
     print(result) # TODO rm
     return result.stdout
 

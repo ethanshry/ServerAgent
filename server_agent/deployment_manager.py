@@ -40,7 +40,7 @@ class DeploymentManager():
 
         self.destination = self.app_spec['deployment']['dest']
 
-        self.commit = subprocess.run(['pm2 status']), capture_output=True, cwd=f'~/{self.owner}/{self.repo}').stdout
+        self.commit = subprocess.run(['pm2 status'], capture_output=True, cwd=f'~/{self.owner}/{self.repo}').stdout
 
         print(f'{self.type} - {self.destination} - {self.commit}')
 
