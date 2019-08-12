@@ -44,6 +44,8 @@ class DeploymentManager():
 
         print(f'{self.type} - {self.destination} - {self.commit}')
 
+        subprocess.run(f"pm2 stop {self.app_spec['info']['name']}", shell=True, cwd=f"{ROOT}/{self.owner}/{self.repo}")
+
         return True
     
     def clone(self):
