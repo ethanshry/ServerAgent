@@ -9,7 +9,7 @@ class AppManager():
         try:
             self._data = toml.load(config_path)
         except FileNotFoundError:
-            LOG.error(f'count not find file with path {config_path}')
+            LOG.error(f'could not find file with path {config_path}')
             raise SystemExit
     
     def deregister_app(self, name):

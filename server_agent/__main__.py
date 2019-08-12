@@ -1,8 +1,11 @@
 from bottle import Bottle, run, get, post, static_file, request
 from server_agent.app_manager import AppManager
+from server_agent.deployment_manager import DeploymentManager
+from server_agent import LOG
 from pathlib import Path
 import requests as req
 import base64
+import subprocess
 
 # globals
 PORT = 9000
@@ -31,21 +34,39 @@ def github_event():
             # pull request was merged, we're in luck
             if data['pull_request']['base']['ref'] == 'deployment':
                 # we pulled to the deployment branch, we want to run this code
-                print(f"event is good, trying to deploy {data['repository']['full_name']}")
+                LOG.info(f"event is good, trying to deploy {data['repository']['full_name']}")
 
                 # check for agent_config.toml in root
                 url = f"{FILE_API_BASE}{data['repository']['full_name']}/contents/agent_config.toml"
                 res = req.get(url).json()
                 if 'message' in res.keys():
                     # file not found
-                    print('repo does not have a valid agent_config.toml')
+                    LOG.error('repo does not have a valid agent_config.toml')
                 else:
-                    config_file_data = base64.b64decode(res['content'])
-                    print(config_file_data)
+                    # app is deployable
+                    deployment = DeploymentManager(*(data['repository']['full_name'].split('/')))
+
+                    if deployment.clone() not True:
+                        LOG.error('unable to clone project')
+                        return
+                    if deployment.load() not True:
+                        LOG.error('error loading config data')
+                        return
+
+                    if manager.register_app(deployment.repo, deployment.type, deployment.destination, deployment.commit) not True:
+                        LOG.error('failed to register app')
+                        return
+
+                    deployment.deploy()
+
+                    LOG.info('application succesfully deployed')
+                    return
 
 
-@app.get('/rt/<name>')
+@app.get('/status')
 def sec(name):
-    return f'hello {name}'
+    result = subprocess.run(['pm2 status']), capture_output=True, cwd='.')
+    print(result) # TODO rm
+    return result.stdout
 
 run(app, host='0.0.0.0', port=PORT)
