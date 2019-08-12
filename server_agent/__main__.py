@@ -27,8 +27,10 @@ def github_event():
         print(data['pull_request']['merged'])
         if data['pull_request']['merged'] is True:
             # pull request was merged, we're in luck
-            print(data['base'])
-            if data['base']['ref'] == 'deployment':
+            print(data['ref'])
+            print(data['repo'])
+            #print(data['base'])
+            if ['ref'] == 'refs/heads/deployment':
                 # we pulled to the deployment branch, we want to run this code
                 print(f"event is good, trying to deploy {data['repo']['full_name']}")
 
