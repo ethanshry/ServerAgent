@@ -33,7 +33,7 @@ class DeploymentManager():
         try:
             self.app_spec = toml.load(f'{ROOT}/{self.owner}/{self.repo}/agent_config.toml')
         except FileNotFoundError:
-            LOG.error(f'could not find file with path {config_path}')
+            LOG.error(f'could not find agent_config in repo')
             return False
         
         self.type = self.app_spec['deployment']['type']
@@ -51,7 +51,7 @@ class DeploymentManager():
         if not os.path.exists(f'{ROOT}/{self.owner}'):
             os.makedirs(f'{ROOT}/{self.owner}')
         # clone repo
-        res = subprocess.run([f'rm -rf {ROOT}/{self.owner}/{self.repo}', f'git clone {GITHUB_URL}/{self.owner}/{self.repo}.git'], shell=True, cwd=f'{ROOT}/{self.owner}')
+        res = subprocess.run([f'rm -rf {ROOT}/{self.owner}/{self.repo} &&', f'git clone {GITHUB_URL}/{self.owner}/{self.repo}.git'], shell=True, cwd=f'{ROOT}/{self.owner}')
 
         return res.returncode is 0
     
