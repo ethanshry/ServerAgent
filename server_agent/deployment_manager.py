@@ -40,7 +40,7 @@ class DeploymentManager():
 
         self.destination = self.app_spec['deployment']['dest']
 
-        self.commit = subprocess.run(['pm2 status'], stdout=subprocess.PIPE, cwd=f'~/{self.owner}/{self.repo}').stdout
+        self.commit = subprocess.run(['pm2 status'], stdout=subprocess.PIPE, shell=True,  cwd=f'~/{self.owner}/{self.repo}').stdout
 
         print(f'{self.type} - {self.destination} - {self.commit}')
 
@@ -51,7 +51,7 @@ class DeploymentManager():
         if not os.path.exists(f'~/{self.owner}'):
             os.makedirs(f'~/{self.owner}')
         # clone repo
-        res = subprocess.run([f'git clone {GITHUB_URL}/{self.owner}/{self.repo}.git'], cwd=f'~/{self.owner}')
+        res = subprocess.run([f'git clone {GITHUB_URL}/{self.owner}/{self.repo}.git'], shell=True, cwd=f'~/{self.owner}')
 
         return res.returncode is not 0
     
@@ -72,12 +72,12 @@ class DeploymentManager():
     def _deploy_port(self):
         """ deploy to a port via pm2 """
         # run user-configured scripts prior to deployment
-        res = subprocess.run(self.app_spec['deployment']['scripts'], cwd=f'~/{self.owner}/{self.repo}')
+        res = subprocess.run(self.app_spec['deployment']['scripts'], shell=True, cwd=f'~/{self.owner}/{self.repo}')
 
         if res.returncode is not 0:
             LOG.error('user deployment scripts failed')
             return False
     
-        res = subprocess.run(f"pm2 start {self.owner}_{self.repo} --interpreter=python3 --interpreter-args='-m {self.repo}'", cwd=f'~/{self.owner}/{self.repo}')
+        res = subprocess.run(f"pm2 start {self.owner}_{self.repo} --interpreter=python3 --interpreter-args='-m {self.repo}'", shell=True, cwd=f'~/{self.owner}/{self.repo}')
 
         return res.returncode != 0
