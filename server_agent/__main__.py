@@ -24,8 +24,8 @@ def github_event():
     print(data['action'])
     if data['action'] == 'closed':
         # this is a pull request which was either closed or merged
-        print(data['merged'])
-        if data['merged'] == 'true':
+        print(data['pull_request']['merged'])
+        if data['pull_request']['merged'] == 'true':
             # pull request was merged, we're in luck
             print(data['base'])
             if data['base']['ref'] == 'deployment':
