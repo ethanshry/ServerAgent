@@ -25,7 +25,7 @@ def github_event():
     if data['action'] == 'closed':
         # this is a pull request which was either closed or merged
         print(data['pull_request']['merged'])
-        if data['pull_request']['merged'] == 'true':
+        if data['pull_request']['merged'] is True:
             # pull request was merged, we're in luck
             print(data['base'])
             if data['base']['ref'] == 'deployment':
@@ -36,4 +36,4 @@ def github_event():
 def sec(name):
     return f'hello {name}'
 
-run(app, host='127.0.0.1', port=PORT)
+run(app, host='0.0.0.0', port=PORT)
