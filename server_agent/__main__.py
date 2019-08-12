@@ -21,6 +21,8 @@ def log():
 @app.post('/github-event')
 def github_event():
     data = request.json
+    for k,v in data.items():
+        print(k)
     print(data['action'])
     if data['action'] == 'closed':
         # this is a pull request which was either closed or merged
