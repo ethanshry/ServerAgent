@@ -42,15 +42,19 @@ class AppManager():
 
         LOG.info(f'registering app with name: {name} of type {deploy_type} at dest {dest}')
         if name in self._data:
-            LOG.info(f'cannot register application: Another app of this name already exists')
-            return False
+            if self._data[name]['commit'] == commit:
+                LOG.info(f'application is already on this commit: {commit}')
+                return False
+            self._data[name] = {
+                'type': deploy_type,
+                'dest': dest,
+                'commit': commit
+            }
+            return True
         elif dest in map(lambda x: self._data[x]['dest'], self._data):
             LOG.info(f'cannot register application: Another app exists at target destination')
             return False
         else:
-            if self._data[name]['commit'] == commit:
-                LOG.info(f'application is already on this commit: {commit}')
-                return False
             self._data[name] = {
                 'type': deploy_type,
                 'dest': dest,
