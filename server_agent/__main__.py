@@ -55,6 +55,7 @@ def github_event():
                     print('loaded config')
                     
                     # tbh think this step doesn't actually matter? idk gotta clean this up
+                    manager.deregister_app(deployment.repo)
                     if not manager.register_app(deployment.repo, deployment.type, deployment.destination, deployment.commit):
                         LOG.error('failed to register app')
                         return
