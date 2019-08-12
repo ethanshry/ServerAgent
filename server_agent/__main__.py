@@ -65,7 +65,7 @@ def github_event():
 
 @app.get('/status')
 def status():
-    result = subprocess.run(['pm2 status'], capture_output=True, cwd='.')
+    result = subprocess.run(['pm2 status'], stdout=subprocess.PIPE, cwd='.')
     print(result) # TODO rm
     return result.stdout
 
