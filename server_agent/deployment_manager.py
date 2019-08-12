@@ -3,7 +3,7 @@ from server_agent import LOG
 import subprocess
 import os
 
-GITHUB_URL = 'http://github.com'
+GITHUB_URL = 'https://github.com'
 CLONE_PATH ='~/'
 
 

@@ -64,7 +64,7 @@ def github_event():
 
 
 @app.get('/status')
-def sec(name):
+def status():
     result = subprocess.run(['pm2 status'], capture_output=True, cwd='.')
     print(result) # TODO rm
     return result.stdout
